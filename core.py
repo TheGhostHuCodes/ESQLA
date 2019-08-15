@@ -129,9 +129,15 @@ result = engine.execute(ins, inventory_list)
 
 # Querying Data.
 s = select([cookies])
+print(str(s))
 rp = engine.execute(s)
 results = rp.fetchall()
 pprint(results)
+
+first_row = results[0]
+print("first_row[1]: {}".format(first_row[1]))
+print("first_row.cookie_name: {}".format(first_row.cookie_name))
+print("first_row[cookies.c.cookie_name]: {}".format(first_row[cookies.c.cookie_name]))
 
 s = cookies.select()
 rp = engine.execute(s)
@@ -143,19 +149,21 @@ rp = engine.execute(s)
 print(rp.keys())
 print(rp.first())
 
-s = select([cookies.c.cookie_name,cookies.c.quantity]) \
-    .order_by(cookies.c.quantity)
+s = select([cookies.c.cookie_name, cookies.c.quantity]).order_by(cookies.c.quantity)
 rp = engine.execute(s)
 for cookie in rp:
-    print('{quantity} - {name}'.format(
-        quantity=cookie.quantity, name=cookie.cookie_name))
+    print(
+        "{quantity} - {name}".format(quantity=cookie.quantity, name=cookie.cookie_name)
+    )
 
-s = select([cookies.c.cookie_name,cookies.c.quantity]) \
-    .order_by(desc(cookies.c.quantity))
+s = select([cookies.c.cookie_name, cookies.c.quantity]).order_by(
+    desc(cookies.c.quantity)
+)
 rp = engine.execute(s)
 for cookie in rp:
-    print('{quantity} - {name}'.format(
-        quantity=cookie.quantity, name=cookie.cookie_name))
+    print(
+        "{quantity} - {name}".format(quantity=cookie.quantity, name=cookie.cookie_name)
+    )
 
 s = select([cookies.c.cookie_name, cookies.c.quantity]) \
     .order_by(cookies.c.quantity) \
