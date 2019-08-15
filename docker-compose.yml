@@ -1,0 +1,11 @@
+version: "3.7"
+services:
+  local-db:
+    image: "postgres:11.5-alpine"
+    container_name: "esqla_postgres"
+    environment:
+      POSTGRES_USER: esqla
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: esqla_db
+    ports:
+      - "5432:5432"
