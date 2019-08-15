@@ -22,6 +22,13 @@ databases within the postgres container instance.
 $ docker exec -it esqla_postgres psql esqla_db -U esqla -c "\l"
 ```
 
+Here is an example of querying for all rows in the `cookies` table of the
+`esqla_db` database.
+
+```console
+$ docker exec -it esqla_postgres psql esqla_db -U esqla -c "SELECT * FROM cookies;"
+```
+
 To shut down the local postgres instance, execute:
 
 ```console
