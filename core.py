@@ -165,9 +165,11 @@ for cookie in rp:
         "{quantity} - {name}".format(quantity=cookie.quantity, name=cookie.cookie_name)
     )
 
-s = select([cookies.c.cookie_name, cookies.c.quantity]) \
-    .order_by(cookies.c.quantity) \
+s = (
+    select([cookies.c.cookie_name, cookies.c.quantity])
+    .order_by(cookies.c.quantity)
     .limit(2)
+)
 rp = engine.execute(s)
 pprint([result.cookie_name for result in rp])
 
@@ -181,7 +183,7 @@ record = rp.first()
 print(record.keys())
 print(record.count_1)
 
-s = select([func.count(cookies.c.cookie_name).label('inventory_count')])
+s = select([func.count(cookies.c.cookie_name).label("inventory_count")])
 rp = engine.execute(s)
 record = rp.first()
 print(record.keys())
