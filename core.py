@@ -1,59 +1,77 @@
 from datetime import datetime
 from pprint import pprint
 
-from sqlalchemy import (and_, cast, create_engine, delete, desc, func, insert,
-                        not_, or_, select, text, update, MetaData, Table,
-                        Column, Boolean, Integer, Numeric, String, ForeignKey,
-                        DateTime)
+from sqlalchemy import (
+    and_,
+    Boolean,
+    cast,
+    Column,
+    create_engine,
+    DateTime,
+    delete,
+    desc,
+    ForeignKey,
+    func,
+    insert,
+    Integer,
+    MetaData,
+    not_,
+    Numeric,
+    or_,
+    select,
+    String,
+    Table,
+    text,
+    update,
+)
 
 # Database schema.
 metadata = MetaData()
 
 cookies = Table(
-    'cookies',
+    "cookies",
     metadata,
-    Column('cookie_id', Integer(), primary_key=True),
-    Column('cookie_name', String(50), index=True),
-    Column('cookie_recipe_url', String(255)),
-    Column('cookie_sku', String(55)),
-    Column('quantity', Integer()),
-    Column('unit_cost', Numeric(12, 2)),
+    Column("cookie_id", Integer(), primary_key=True),
+    Column("cookie_name", String(50), index=True),
+    Column("cookie_recipe_url", String(255)),
+    Column("cookie_sku", String(55)),
+    Column("quantity", Integer()),
+    Column("unit_cost", Numeric(12, 2)),
 )
 
 users = Table(
-    'users',
+    "users",
     metadata,
-    Column('user_id', Integer(), primary_key=True),
-    Column('username', String(15), nullable=False, unique=True),
-    Column('email_address', String(255), nullable=False),
-    Column('phone', String(20), nullable=False),
-    Column('password', String(25), nullable=False),
-    Column('created_on', DateTime(), default=datetime.now),
-    Column(
-        'updated_on', DateTime(), default=datetime.now, onupdate=datetime.now),
+    Column("user_id", Integer(), primary_key=True),
+    Column("username", String(15), nullable=False, unique=True),
+    Column("email_address", String(255), nullable=False),
+    Column("phone", String(20), nullable=False),
+    Column("password", String(25), nullable=False),
+    Column("created_on", DateTime(), default=datetime.now),
+    Column("updated_on", DateTime(), default=datetime.now, onupdate=datetime.now),
 )
 
 orders = Table(
-    'orders',
+    "orders",
     metadata,
-    Column('order_id', Integer(), primary_key=True),
-    Column('user_id', ForeignKey('users.user_id')),
-    Column('shipped', Boolean(), default=False),
+    Column("order_id", Integer(), primary_key=True),
+    Column("user_id", ForeignKey("users.user_id")),
+    Column("shipped", Boolean(), default=False),
 )
 
 line_items = Table(
-    'line_items',
+    "line_items",
     metadata,
-    Column('line_item_id', Integer(), primary_key=True),
-    Column('order_id', ForeignKey('orders.order_id')),
-    Column('cookie_id', ForeignKey('cookies.cookie_id')),
-    Column('quantity', Integer()),
-    Column('extended_cost', Numeric(12, 2)),
+    Column("line_item_id", Integer(), primary_key=True),
+    Column("order_id", ForeignKey("orders.order_id")),
+    Column("cookie_id", ForeignKey("cookies.cookie_id")),
+    Column("quantity", Integer()),
+    Column("extended_cost", Numeric(12, 2)),
 )
 
-engine = create_engine(
-    'postgresql+psycopg2://postgres:postgres@localhost:5432')
-metadata.create_all(engine)
+engine = create_engine("postgresql+psycopg2://esqla:secret@localhost:5432/esqla_db")
+#                                             ^^^^^ ^^^^^^ ^^^^^^^^^^^^^^ ^^^^^^^^
+#                                             user  pass   host:port      database
 
 # Insert cookies.
 # pylint: disable=E1120
